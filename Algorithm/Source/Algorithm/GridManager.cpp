@@ -77,6 +77,11 @@ void AGridManager::CreateCharacters()
     TArray<int> NodesEmpty;
     ACharacters* Characters = GetWorld()->SpawnActor<ACharacters>(GetActorLocation(), GetActorRotation());
 
+    if (GNodes.Num() == 0)
+    {
+        return;
+    }
+
     for (int i = 0; i < GNodes.Num(); i++) 
     {
         NodesEmpty.Add(i);
@@ -96,7 +101,10 @@ void AGridManager::CreateCharacters()
         Characters->CurrentNodes.AddZeroed();
         Characters->SetupRouteMesh(i);
         Characters->CharacterLocations.Add(Location);
-        NodesEmpty.RemoveAt(Node);
+        if (NodesEmpty.Num() - 1 > CharactersCount - i)
+        { 
+            NodesEmpty.RemoveAt(Node);
+        }
     }
 
     Characters->GMParent = this;
